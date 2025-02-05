@@ -25,6 +25,7 @@ export const InstanceProvider: FC<{ children: ReactNode }> = ({children}) => {
   const clearInstance = () => {
     setIdInstance('');
     setApiTokenInstance('');
+    localStorage.clear();
   };
 
   return (

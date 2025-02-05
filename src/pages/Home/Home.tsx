@@ -1,16 +1,21 @@
-import { useInstance } from '@/components/context/InstanceContext.tsx';
+import { useInstance } from '@/contexts/InstanceContext.tsx';
 import { Navigate } from 'react-router-dom';
+import useChatHistory from '@/hooks/useChatHistory.tsx';
+import Chats from '@/components/chats/Chats.tsx';
 
-const Home = (props) => {
+const Home = () => {
   const {apiTokenInstance, idInstance} = useInstance();
-  console.log(apiTokenInstance);
 
   if (!apiTokenInstance || !idInstance) {
     return <Navigate to="/login"/>
   }
 
   return (
-    <div>Home page</div>
+    <div className="flex bg-info w-full h-screen">
+      <div className="w-[5%]">123</div>
+      <Chats/>
+      <div className="w-full"></div>
+    </div>
   );
 }
 
