@@ -11,6 +11,9 @@ export default {
   		},
   		colors: {
 			info: '#E9EDEF',
+			"gray-cover": '#D1D7DB',
+			"light-gray": '#8696A0',
+			"outgoing-message": '#005C4B',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

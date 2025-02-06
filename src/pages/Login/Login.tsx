@@ -3,7 +3,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from '@/components/ui/input.tsx';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useInstance } from '@/contexts/InstanceContext.tsx';
+import { useAppContext } from '@/contexts/AppContext.tsx';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axiosApi from '@/constants/axiosApi.ts';
 import { useState } from 'react';
@@ -22,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
-  const {idInstance, apiTokenInstance, setInstance} = useInstance();
+  const {idInstance, apiTokenInstance, setInstance} = useAppContext();
   if (idInstance && apiTokenInstance) {
     return <Navigate to="/"/>
   }

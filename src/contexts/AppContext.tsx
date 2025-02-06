@@ -7,7 +7,7 @@ interface InstanceContextType {
   clearInstance: () => void;
 }
 
-const InstanceContext = createContext<InstanceContextType | undefined>(undefined);
+const AppContext = createContext<InstanceContextType | undefined>(undefined);
 
 export const InstanceProvider: FC<{ children: ReactNode }> = ({children}) => {
   const localIdInstance = localStorage.getItem('idInstance') || '';
@@ -29,14 +29,14 @@ export const InstanceProvider: FC<{ children: ReactNode }> = ({children}) => {
   };
 
   return (
-    <InstanceContext.Provider value={{idInstance, apiTokenInstance, setInstance, clearInstance}}>
+    <AppContext.Provider value={{idInstance, apiTokenInstance, setInstance, clearInstance}}>
       {children}
-    </InstanceContext.Provider>
+    </AppContext.Provider>
   );
 };
 
-export const useInstance = () => {
-  const context = useContext(InstanceContext);
+export const useAppContext = () => {
+  const context = useContext(AppContext);
   if (!context) {
     throw new Error('useInstance must be used within an InstanceProvider');
   }
