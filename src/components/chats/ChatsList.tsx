@@ -1,19 +1,25 @@
-import { LoaderCircle, MessageSquarePlus } from 'lucide-react';
+import { LoaderCircle, LogOut } from 'lucide-react';
 import Chat from '@/components/chats/Chat.tsx';
-import useChatHistory from '@/hooks/useChats.tsx';
+import useChatHistory from '@/hooks/useChatsHistory.tsx';
 import { FC } from 'react';
+import { useAppContext } from '@/contexts/AppContext.tsx';
+import { NewChat } from '@/components/chats/NewChat.tsx';
 
 interface Props {
   id?: string;
 }
 
-const Chats: FC<Props> = ({id}) => {
-  const {groupedMessages, loading} = useChatHistory();
+const ChatsList: FC<Props> = ({id}) => {
+  const {logOut} = useAppContext();
+  const {groupedMessages, loading,find } = useChatHistory();
   return (
-    <div className="w-[40%] bg-white flex flex-col">
+    <div className="max-w-[30%] w-[30%] bg-white flex flex-col truncate">
       <div className="flex items-center justify-between px-[16px] h-[60px] bg-light-gray border-r-2">
         <h1 className="text-2xl font-bold">Chats</h1>
-        <MessageSquarePlus size={30} color="#5c5c5c" className="active:opacity-[0.8] hover:cursor-pointer"/>
+        <div className="flex">
+          <NewChat/>
+          <LogOut className="ml-4 text-gray-800" onClick={logOut}/>
+        </div>
       </div>
       <>
         {
@@ -22,7 +28,7 @@ const Chats: FC<Props> = ({id}) => {
               <LoaderCircle size={80} className="animate-spin"/>
             </div>
             :
-            <div className="flex-1 overflow-y-auto scroll-smooth">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth">
               {Object.keys(groupedMessages).map((chatId) => (
                 <Chat key={groupedMessages[chatId].idMessage} {...groupedMessages[chatId]} id={id}/>
               ))}
@@ -34,4 +40,4 @@ const Chats: FC<Props> = ({id}) => {
   );
 };
 
-export default Chats;
+export default ChatsList;

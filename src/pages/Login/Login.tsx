@@ -1,64 +1,18 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAppContext } from '@/contexts/AppContext.tsx';
-import { Navigate, useNavigate } from 'react-router-dom';
-import axiosApi from '@/constants/axiosApi.ts';
-import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button.tsx';
 import { Loader } from 'lucide-react';
-
-const formSchema = z.object({
-  idInstance: z.string().min(2, {
-    message: 'ID must be at least 2 characters.',
-  }).max(50, {message: 'Max range 50'}),
-  apiTokenInstance: z.string().min(6, {
-    message: 'API Token must be at least 6 characters.',
-  }).max(50, {message: 'Max range 50'}),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useLogin } from '@/hooks/useLogin.tsx';
 
 const Login = () => {
-  const {idInstance, apiTokenInstance, setInstance} = useAppContext();
+  const {form, idInstance,
+    apiTokenInstance, loading, onSubmit, errorMessage} = useLogin();
+
   if (idInstance && apiTokenInstance) {
     return <Navigate to="/"/>
   }
-
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<null | string>(null);
-  const navigate = useNavigate();
-
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      idInstance: '',
-      apiTokenInstance: '',
-    },
-  });
-
-  const onSubmit = ({idInstance, apiTokenInstance}: FormValues) => {
-    setLoading(true);
-    setErrorMessage(null);
-    axiosApi.get(`/waInstance${idInstance}/getWaSettings/${apiTokenInstance}`).then(
-      (response) => {
-        if (response.data.stateInstance === 'authorized') {
-          setInstance(idInstance, apiTokenInstance);
-          navigate('/');
-        }
-      }
-    ).catch((error) => {
-      if (error.status === 401 || error.status === 403) {
-        setErrorMessage('Forbidden');
-      }
-      setLoading(false);
-    }).finally(() => {
-      setLoading(false);
-    })
-
-  };
 
   return (
     <div className="flex items-center justify-center min-h-screen">

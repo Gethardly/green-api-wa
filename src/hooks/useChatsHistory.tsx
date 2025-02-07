@@ -27,13 +27,13 @@ const initialError = {
   outgoing: null
 }
 
-const UseChats = () => {
+const useChatsHistory = () => {
   const { idInstance, apiTokenInstance } = useAppContext();
   const [groupedMessages, setGroupedMessages] = useState<Record<string, OutGoingMessage | IncomingMessage>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<MessagesError>(initialError);
 
-  useEffect(() => {
+  const getMessages = () => {
     setLoading(true);
     setError(initialError);
 
@@ -61,9 +61,13 @@ const UseChats = () => {
 
       setGroupedMessages(grouped);
     }).finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    getMessages();
   }, []);
 
-  return { groupedMessages, loading, error };
+  return { groupedMessages, loading, error, getMessages };
 };
 
-export default UseChats;
+export default useChatsHistory;

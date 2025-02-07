@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Chat: FC = ({timestamp, senderName, textMessage, chatId, id}) => {
   const navigate = useNavigate();
   const time = dayjs.unix(timestamp).format('HH:mm');
-  const chatIdNumber = chatId.replace(/\D/g, "")
+  const chatIdNumber = chatId.replace(/\D/g, "");
   const bg = id === chatId ? 'bg-gray-cover' : '';
 
   return (
@@ -19,7 +19,7 @@ const Chat: FC = ({timestamp, senderName, textMessage, chatId, id}) => {
         <p className="text-[14px] flex justify-between">
           {chatIdNumber} <span>{time}</span>
         </p>
-        <span className="text-[10px] truncate">{textMessage}</span>
+        <span className="text-[10px]">{textMessage}</span>
       </div>
     </div>
   );

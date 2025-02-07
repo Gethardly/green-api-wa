@@ -4,7 +4,7 @@ interface InstanceContextType {
   idInstance: string;
   apiTokenInstance: string;
   setInstance: (idInstance: string, apiTokenInstance: string) => void;
-  clearInstance: () => void;
+  logOut: () => void;
 }
 
 const AppContext = createContext<InstanceContextType | undefined>(undefined);
@@ -22,14 +22,14 @@ export const InstanceProvider: FC<{ children: ReactNode }> = ({children}) => {
     localStorage.setItem('apiTokenInstance', token);
   };
 
-  const clearInstance = () => {
+  const logOut = () => {
     setIdInstance('');
     setApiTokenInstance('');
     localStorage.clear();
   };
 
   return (
-    <AppContext.Provider value={{idInstance, apiTokenInstance, setInstance, clearInstance}}>
+    <AppContext.Provider value={{idInstance, apiTokenInstance, setInstance, logOut}}>
       {children}
     </AppContext.Provider>
   );
