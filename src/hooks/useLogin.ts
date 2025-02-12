@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +13,22 @@ const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
-export const useLogin = () => {
+interface UseLoginReturn {
+  form: UseFormReturn<FormValues>;
+  idInstance: string | null;
+  apiTokenInstance: string | null;
+  loading: boolean;
+  onSubmit: (data: FormValues) => Promise<void>;
+  errorMessage: string | null;
+}
+
+export const useLogin = (): UseLoginReturn => {
   const { idInstance, apiTokenInstance, setInstance } = useAppContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const form = useForm({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       idInstance: '',
@@ -50,10 +59,14 @@ export const useLogin = () => {
   };
 
   useEffect(() => {
-    if (errorMessage) {
-      setErrorMessage(null);
-    }
-  }, [form.watch('idInstance'), form.watch('apiTokenInstance')]);
+    const subscription = form.watch(() => {
+      if (errorMessage) {
+        setErrorMessage(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, errorMessage]);
 
   return {
     idInstance,
@@ -62,5 +75,5 @@ export const useLogin = () => {
     loading,
     errorMessage,
     onSubmit,
-  };
+  } as const;
 };

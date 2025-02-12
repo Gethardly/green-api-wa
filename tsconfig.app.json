@@ -14,11 +14,15 @@
     },
 
     /* Bundler mode */
+    "esModuleInterop": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noImplicitAny": false,
     "jsx": "react-jsx",
 
     /* Linting */
