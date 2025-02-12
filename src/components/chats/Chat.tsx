@@ -3,7 +3,7 @@ import * as dayjs from 'dayjs';
 import { UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Chat: FC = ({timestamp, senderName, textMessage, chatId, id}) => {
+const Chat: FC = ({timestamp, textMessage, chatId, id, typeMessage}) => {
   const navigate = useNavigate();
   const time = dayjs.unix(timestamp).format('HH:mm');
   const chatIdNumber = chatId.replace(/\D/g, "");
@@ -19,7 +19,7 @@ const Chat: FC = ({timestamp, senderName, textMessage, chatId, id}) => {
         <p className="text-[14px] flex justify-between">
           {chatIdNumber} <span>{time}</span>
         </p>
-        <span className="text-[10px]">{textMessage}</span>
+        <span className="text-[10px]">{textMessage ? textMessage : typeMessage}</span>
       </div>
     </div>
   );

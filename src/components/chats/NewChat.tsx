@@ -10,31 +10,22 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { MessageSquarePlus } from 'lucide-react';
-import useNewChat from '@/hooks/useNewChat.tsx';
-import useGetMessages from '@/hooks/useGetMessages.tsx';
-import { useState } from 'react';
-import useChatsHistory from '@/hooks/useChatsHistory.tsx';
+import { Loader, MessageSquarePlus } from 'lucide-react';
+import useNewChat from '@/hooks/useNewChat.ts';
 
 export function NewChat() {
-  const [isOpen, setIsOpen] = useState(false);
-  const {handleChange, formData} = useNewChat();
-  const {getMessages} = useChatsHistory();
-  const {sendMessage} = useGetMessages();
+  const {
+    handleChange, formData,
+    onSubmit, loading, isOpen, setIsOpen
+  } = useNewChat();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    sendMessage(formData.phoneNumber + '@c.us', formData.message);
-    setIsOpen(false);
-    getMessages();
-  }
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} modal={isOpen} >
       <DialogTrigger asChild onClick={() => setIsOpen(true)}>
         <MessageSquarePlus size={30} color="#5c5c5c" className="active:opacity-[0.8] hover:cursor-pointer"/>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={(e) => onSubmit(e, formData)}>
           <DialogHeader>
             <DialogTitle>New chat</DialogTitle>
             <DialogDescription>
@@ -58,7 +49,9 @@ export function NewChat() {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Send</Button>
+            <Button type="submit">Send
+              {loading && <Loader size={5} className="animate-spin"/>}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -1,15 +1,17 @@
 import { FC } from 'react';
 import { Loader, UserRound } from 'lucide-react';
 import Message from '@/components/messages/Message.tsx';
-import useGetMessages from '@/hooks/useGetMessages.tsx';
+import useGetMessages from '@/hooks/useGetMessages.ts';
 import MessageForm from '@/components/messages/MessageForm.tsx';
+import { useAppContext } from '@/contexts/AppContext.tsx';
 
 interface Props {
   id: string;
 }
 
 const MessagesList: FC<Props> = ({id}) => {
-  const {sortedMessages, loading, sendMessage} = useGetMessages();
+  const {sortedMessages} = useAppContext();
+  const {loading, sendMessage} = useGetMessages(id);
   const numberId = id.replace(/\D/g, "");
 
   return (
@@ -26,7 +28,7 @@ const MessagesList: FC<Props> = ({id}) => {
             </div>
             :
             sortedMessages.map((msg) => (
-              <Message msg={msg} incoming={msg.type === 'incoming'} key={msg.idMessage}/>
+              <Message msg={msg} incoming={msg.type === 'incoming'} key={msg.idMessage || msg.timestamp}/>
             ))
         }
       </div>
