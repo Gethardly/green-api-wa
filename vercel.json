@@ -6,7 +6,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"  // All routes should be redirected to index.html
+      "destination": "/index.html"
     }
   ]
 }
