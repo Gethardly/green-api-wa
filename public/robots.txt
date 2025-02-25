@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /private/
+Disallow: /tmp/
+Sitemap: https://green-wa.vercel.app/sitemap.xml
