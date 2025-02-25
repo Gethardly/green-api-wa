@@ -3,12 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://7105.api.green-api.com/:path*"
-    }
-  ],
-  "routes": [
+    },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"  // All routes should be redirected to index.html
     }
   ]
 }
